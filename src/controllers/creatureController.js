@@ -18,11 +18,14 @@ router.get('/creature/:creatureId/details', async (req,res) =>{
     const creature = await creatureManager.getOne(creatureId).lean();
     const ownerInfo = await userManager.getInfo(creature.ownerId).lean();
     const isOwner = req.user?._id === creature.ownerId?.toString();
-    const hasVoted = !isOwner && creature.votes?.map(id => id.toString()).includes(req.user?._id.toString());
-    console.log(hasVoted);
-
-    
+    const hasVoted = !isOwner && creature.votes?.map(id => id.toString()).includes(req.user?._id.toString());   
     res.render('creature/details', {creature, ownerInfo,isOwner,hasVoted});
 });
+
+router.get('/creature/:creatureId/delete', async (req,res) =>{
+    const creatureId = req.params.creatureId;
+    await creatureManager.delete(creatureId);
+    res.redirect('/catalog');
+})
 
 module.exports = router;

@@ -5,3 +5,5 @@ exports.create = (data) => Creature.create(data);
 exports.getAll = () => Creature.find();
 
 exports.getOne = (creatureId) => Creature.findById(creatureId);
+
+exports.delete = (id) => Creature.findByIdAndDelete(id);

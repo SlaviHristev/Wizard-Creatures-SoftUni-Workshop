@@ -22,8 +22,8 @@
                                 <!-- Only for registered user and author of the post -->
 
                                 {{#if isOwner}}
-                                <a href="#" class="edit-btn">Edit</a>
-                                <a href="#" class="del-btn">Delete</a>
+                                <a href="/creature/{{creature._id}}/edit" class="edit-btn">Edit</a>
+                                <a href="/creature/{{creature._id}}/delete" class="del-btn">Delete</a>
                                 {{else}}
                                 {{#if isAuthenticated}}
                                 <!-- logged in users, who have not yet voted-->
