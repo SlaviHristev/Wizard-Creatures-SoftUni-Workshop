@@ -26,6 +26,18 @@ router.get('/creature/:creatureId/delete', async (req,res) =>{
     const creatureId = req.params.creatureId;
     await creatureManager.delete(creatureId);
     res.redirect('/catalog');
+});
+
+router.get('/creature/:creatureId/edit',async (req,res) =>{
+    const creature = await creatureManager.getOne(req.params.creatureId).lean();
+    res.render('creature/edit', {creature});
+});
+
+router.post('/creature/:creatureId/edit', async(req,res) => {
+    const creatureId = req.params.creatureId;
+    const {name,species,skinColor,eyeColor,imageUrl,description} = req.body;
+    await creatureManager.edit(creatureId,{name,species,skinColor,eyeColor,imageUrl,description});
+    res.redirect(`/creature/${creatureId}/details`);
 })
 
 module.exports = router;
