@@ -25,7 +25,7 @@ const creatureSchema = new mongoose.Schema({
         required:true,
     },
     ownerId:{
-        type:String,
+        type: mongoose.Schema.Types.ObjectId,
         required:true,
     },
     votes:{

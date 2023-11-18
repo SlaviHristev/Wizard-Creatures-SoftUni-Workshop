@@ -26,4 +26,6 @@ exports.login = async (email,password) => {
     const token = await jwt.sign(payload,SECRET, {expiresIn: '1d'});
 
     return token;
-}
+};
+
+exports.getInfo = (id) => User.findById(id).select('firstName lastName');
