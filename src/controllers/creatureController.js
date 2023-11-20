@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const creatureManager = require('../managers/creatureManager')
 const userManager = require('../managers/userManager')
+const getCreatureVotesInfo = require('../utils/getCreatureVotesInfo');
 
 router.get('/create', (req,res) =>{
     res.render('creature/create')
@@ -18,7 +19,10 @@ router.get('/creature/:creatureId/details', async (req,res) =>{
     const creature = await creatureManager.getOne(creatureId).lean();
     const ownerInfo = await userManager.getInfo(creature.ownerId).lean();
     const isOwner = req.user?._id === creature.ownerId?.toString();
-    const hasVoted = !isOwner && creature.votes?.map(id => id.toString()).includes(req.user?._id.toString());   
+    const hasVoted = !isOwner && creature.votes?.map(id => id.toString()).includes(req.user?._id.toString());
+    const test = await getCreatureVotesInfo(creatureId);
+    console.log(test);
+    
     res.render('creature/details', {creature, ownerInfo,isOwner,hasVoted});
 });
 
@@ -37,6 +41,13 @@ router.post('/creature/:creatureId/edit', async(req,res) => {
     const creatureId = req.params.creatureId;
     const {name,species,skinColor,eyeColor,imageUrl,description} = req.body;
     await creatureManager.edit(creatureId,{name,species,skinColor,eyeColor,imageUrl,description});
+    res.redirect(`/creature/${creatureId}/details`);
+})
+
+router.get('/creature/:creatureId/vote', async(req,res) =>{
+    const creatureId = req.params.creatureId;
+    const userId = req.user._id;
+    await creatureManager.vote(creatureId,userId);
     res.redirect(`/creature/${creatureId}/details`);
 })
 
