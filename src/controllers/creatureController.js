@@ -20,10 +20,10 @@ router.get('/creature/:creatureId/details', async (req,res) =>{
     const ownerInfo = await userManager.getInfo(creature.ownerId).lean();
     const isOwner = req.user?._id === creature.ownerId?.toString();
     const hasVoted = !isOwner && creature.votes?.map(id => id.toString()).includes(req.user?._id.toString());
-    const test = await getCreatureVotesInfo(creatureId);
-    console.log(test);
+    const emails = await getCreatureVotesInfo(creatureId);
+    console.log(emails);
     
-    res.render('creature/details', {creature, ownerInfo,isOwner,hasVoted});
+    res.render('creature/details', {creature, ownerInfo,isOwner,hasVoted,emails});
 });
 
 router.get('/creature/:creatureId/delete', async (req,res) =>{

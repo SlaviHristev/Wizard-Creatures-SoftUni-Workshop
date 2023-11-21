@@ -28,4 +28,4 @@ exports.login = async (email,password) => {
     return token;
 };
 
-exports.getInfo = (id) => User.findById(id).select('firstName lastName');
+exports.getInfo = (id) => User.findById(id).select('firstName lastName email');

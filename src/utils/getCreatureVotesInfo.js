@@ -3,7 +3,9 @@ const userManager = require('../managers/userManager');
 
 async function getCreatureVotesInfo(creatureId){
     const creature = await creatureManager.getOne(creatureId).lean();
-    const userEmails = creature.votes.map(x => userManager.getInfo(x));
+    const userPromises = creature.votes.map(x => userManager.getInfo(x));
+    const userInfos = await Promise.all(userPromises)
+    const userEmails = userInfos.map(info => info.email)
     return userEmails;
 }
 
