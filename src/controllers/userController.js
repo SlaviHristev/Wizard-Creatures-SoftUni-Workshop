@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const userManager = require('../managers/userManager');
+const creatureManager = require('../managers/creatureManager');
 
 router.get('/register', (req,res) =>{
     res.render('user/register');
@@ -25,6 +26,14 @@ router.post('/login', async (req,res) => {
 router.get('/logout', (req,res) =>{
     res.clearCookie('token');
     res.redirect('/');
+});
+
+router.get('/profile', async (req,res) =>{
+    const userId = req.user._id;
+    const creatures = await creatureManager.getAllPersonalPosts(userId);
+    const userName = req.user.firstName + ' ' + req.user.lastName
+    res.render('user/profile', { creatures, userName });
+    console.log(userName);
 })
 
 module.exports = router;
